@@ -30,16 +30,18 @@ export default function Login() {
   const inputStyle = (fieldName) => ({
     width: '100%',
     padding: '14px 16px',
-    background: 'rgba(0,0,0,0.3)',
-    border: `1px solid ${focusedField === fieldName ? 'rgba(100, 255, 218, 0.5)' : 'rgba(255,255,255,0.1)'}`,
-    borderRadius: '10px',
+    background: '#1a1e2e',
+    border: 'none',
+    borderRadius: '12px',
     color: '#ffffff',
     fontSize: '14px',
     outline: 'none',
     transition: 'all 0.3s ease',
     boxSizing: 'border-box',
-    transform: focusedField === fieldName ? 'scale(1.02)' : 'scale(1)',
-    boxShadow: focusedField === fieldName ? '0 0 20px rgba(100, 255, 218, 0.1)' : 'none'
+    boxShadow: focusedField === fieldName 
+      ? 'inset 4px 4px 8px #12151f, inset -4px -4px 8px #222839, 0 0 20px rgba(100, 255, 218, 0.1)' 
+      : 'inset 4px 4px 8px #12151f, inset -4px -4px 8px #222839',
+    transform: focusedField === fieldName ? 'scale(1.01)' : 'scale(1)'
   })
 
   return (
@@ -80,10 +82,9 @@ export default function Login() {
         width: '100%',
         maxWidth: '420px',
         padding: '48px',
-        background: 'linear-gradient(145deg, #1e2235, #171a28)',
+        background: '#1a1e2e',
         borderRadius: '24px',
-        boxShadow: '20px 20px 40px #0d0f15, -20px -20px 40px #252a3c',
-        border: '1px solid rgba(255,255,255,0.03)',
+        boxShadow: '20px 20px 60px #10131a, -20px -20px 60px #242a3e',
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
         transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -92,22 +93,23 @@ export default function Login() {
         <div style={{
           display: 'flex',
           marginBottom: '32px',
-          background: 'rgba(0,0,0,0.2)',
-          borderRadius: '12px',
-          padding: '4px',
+          background: '#1a1e2e',
+          borderRadius: '14px',
+          padding: '6px',
+          boxShadow: 'inset 4px 4px 8px #12151f, inset -4px -4px 8px #222839',
           position: 'relative'
         }}>
           {/* 슬라이딩 배경 */}
           <div style={{
             position: 'absolute',
-            top: '4px',
-            left: isLogin ? '4px' : '50%',
-            width: 'calc(50% - 4px)',
-            height: 'calc(100% - 8px)',
-            background: 'linear-gradient(145deg, #1e2a4a, #182035)',
-            borderRadius: '8px',
+            top: '6px',
+            left: isLogin ? '6px' : 'calc(50% + 3px)',
+            width: 'calc(50% - 9px)',
+            height: 'calc(100% - 12px)',
+            background: '#1a1e2e',
+            borderRadius: '10px',
             transition: 'left 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+            boxShadow: '4px 4px 10px #10131a, -4px -4px 10px #242a3e'
           }} />
           <button
             onClick={() => setIsLogin(true)}
@@ -116,7 +118,7 @@ export default function Login() {
               padding: '12px',
               background: 'transparent',
               border: 'none',
-              borderRadius: '8px',
+              borderRadius: '10px',
               color: isLogin ? '#64ffda' : '#6a7080',
               fontSize: '14px',
               fontWeight: '600',
@@ -135,7 +137,7 @@ export default function Login() {
               padding: '12px',
               background: 'transparent',
               border: 'none',
-              borderRadius: '8px',
+              borderRadius: '10px',
               color: !isLogin ? '#64ffda' : '#6a7080',
               fontSize: '14px',
               fontWeight: '600',
@@ -282,26 +284,33 @@ export default function Login() {
             style={{
               width: '100%',
               padding: '16px',
-              background: 'linear-gradient(145deg, #1e2a4a, #182035)',
-              border: '1px solid rgba(100, 255, 218, 0.3)',
-              borderRadius: '12px',
+              background: '#1a1e2e',
+              border: 'none',
+              borderRadius: '14px',
               color: '#64ffda',
               fontSize: '15px',
               fontWeight: '600',
               cursor: 'pointer',
-              boxShadow: '8px 8px 16px #0d0d1a, -8px -8px 16px #232340',
+              boxShadow: '6px 6px 12px #10131a, -6px -6px 12px #242a3e',
               transition: 'all 0.3s ease',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
               transitionDelay: '0.4s'
             }}
             onMouseOver={(e) => {
+              e.currentTarget.style.boxShadow = '4px 4px 8px #10131a, -4px -4px 8px #242a3e, 0 0 20px rgba(100, 255, 218, 0.15)'
               e.currentTarget.style.transform = 'translateY(-2px)'
-              e.currentTarget.style.boxShadow = '10px 10px 20px #0d0d1a, -10px -10px 20px #232340, 0 0 30px rgba(100, 255, 218, 0.2)'
             }}
             onMouseOut={(e) => {
+              e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
               e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '8px 8px 16px #0d0d1a, -8px -8px 16px #232340'
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #10131a, inset -4px -4px 8px #242a3e'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
             }}
           >
             {isLogin ? '로그인' : '회원가입'}
@@ -321,18 +330,18 @@ export default function Login() {
             gap: '16px',
             marginBottom: '20px'
           }}>
-            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #2a2e3e, transparent)' }} />
             <span style={{ fontSize: '12px', color: '#6a7080' }}>또는</span>
-            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #2a2e3e, transparent)' }} />
           </div>
 
           <button
             style={{
               width: '100%',
               padding: '14px',
-              background: 'transparent',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '10px',
+              background: '#1a1e2e',
+              border: 'none',
+              borderRadius: '12px',
               color: '#a0a0a0',
               fontSize: '14px',
               fontWeight: '500',
@@ -341,17 +350,25 @@ export default function Login() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
+              boxShadow: '6px 6px 12px #10131a, -6px -6px 12px #242a3e',
               transition: 'all 0.3s ease'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(100, 255, 218, 0.3)'
               e.currentTarget.style.color = '#64ffda'
               e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '4px 4px 8px #10131a, -4px -4px 8px #242a3e, 0 0 15px rgba(100, 255, 218, 0.1)'
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
               e.currentTarget.style.color = '#a0a0a0'
               e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #10131a, inset -4px -4px 8px #242a3e'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -367,6 +384,9 @@ export default function Login() {
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        input::placeholder {
+          color: #4a5060;
         }
       `}</style>
     </div>
