@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
+  const navigate = useNavigate()
+  const { login, register, isAuthenticated } = useAuth()
+  
   const [isLogin, setIsLogin] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,16 +21,37 @@ export default function Login() {
     setTimeout(() => setIsVisible(true), 100)
   }, [])
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate])
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
+    setError('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(isLogin ? 'Login:' : 'Register:', formData)
+    setLoading(true)
+    setError('')
+
+    try {
+      if (isLogin) {
+        await login(formData.email, formData.password)
+      } else {
+        await register(formData.email, formData.username, formData.password)
+      }
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.detail || '오류가 발생했습니다')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inputStyle = (fieldName) => ({
@@ -99,7 +126,6 @@ export default function Login() {
           boxShadow: 'inset 4px 4px 8px #12151f, inset -4px -4px 8px #222839',
           position: 'relative'
         }}>
-          {/* 슬라이딩 배경 */}
           <div style={{
             position: 'absolute',
             top: '6px',
@@ -112,7 +138,7 @@ export default function Login() {
             boxShadow: '4px 4px 10px #10131a, -4px -4px 10px #242a3e'
           }} />
           <button
-            onClick={() => setIsLogin(true)}
+            onClick={() => { setIsLogin(true); setError(''); }}
             style={{
               flex: 1,
               padding: '12px',
@@ -131,7 +157,7 @@ export default function Login() {
             로그인
           </button>
           <button
-            onClick={() => setIsLogin(false)}
+            onClick={() => { setIsLogin(false); setError(''); }}
             style={{
               flex: 1,
               padding: '12px',
@@ -174,6 +200,22 @@ export default function Login() {
             {isLogin ? '계정에 로그인하세요' : '새 계정을 만드세요'}
           </p>
         </div>
+
+        {/* 에러 메시지 */}
+        {error && (
+          <div style={{
+            padding: '12px 16px',
+            background: '#1a1e2e',
+            borderRadius: '10px',
+            boxShadow: 'inset 3px 3px 6px #10131a, inset -3px -3px 6px #242a3e',
+            color: '#f472b6',
+            fontSize: '13px',
+            marginBottom: '20px',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* 폼 */}
         <form onSubmit={handleSubmit}>
@@ -230,6 +272,7 @@ export default function Login() {
               onBlur={() => setFocusedField(null)}
               placeholder="example@email.com"
               style={inputStyle('email')}
+              required
             />
           </div>
 
@@ -257,6 +300,8 @@ export default function Login() {
               onBlur={() => setFocusedField(null)}
               placeholder="••••••••"
               style={inputStyle('password')}
+              required
+              minLength={8}
             />
           </div>
 
@@ -281,16 +326,17 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={loading}
             style={{
               width: '100%',
               padding: '16px',
               background: '#1a1e2e',
               border: 'none',
               borderRadius: '14px',
-              color: '#64ffda',
+              color: loading ? '#6a7080' : '#64ffda',
               fontSize: '15px',
               fontWeight: '600',
-              cursor: 'pointer',
+              cursor: loading ? 'not-allowed' : 'pointer',
               boxShadow: '6px 6px 12px #10131a, -6px -6px 12px #242a3e',
               transition: 'all 0.3s ease',
               opacity: isVisible ? 1 : 0,
@@ -298,22 +344,26 @@ export default function Login() {
               transitionDelay: '0.4s'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.boxShadow = '4px 4px 8px #10131a, -4px -4px 8px #242a3e, 0 0 20px rgba(100, 255, 218, 0.15)'
-              e.currentTarget.style.transform = 'translateY(-2px)'
+              if (!loading) {
+                e.currentTarget.style.boxShadow = '4px 4px 8px #10131a, -4px -4px 8px #242a3e, 0 0 20px rgba(100, 255, 218, 0.15)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
               e.currentTarget.style.transform = 'translateY(0)'
             }}
             onMouseDown={(e) => {
-              e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #10131a, inset -4px -4px 8px #242a3e'
-              e.currentTarget.style.transform = 'translateY(0)'
+              if (!loading) {
+                e.currentTarget.style.boxShadow = 'inset 4px 4px 8px #10131a, inset -4px -4px 8px #242a3e'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
             }}
           >
-            {isLogin ? '로그인' : '회원가입'}
+            {loading ? '처리중...' : (isLogin ? '로그인' : '회원가입')}
           </button>
         </form>
 
@@ -379,7 +429,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* 애니메이션 keyframes */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); }
