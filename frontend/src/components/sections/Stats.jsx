@@ -32,15 +32,18 @@ export default function Stats() {
         <div style={{ display: 'flex', gap: '24px' }}>
           {stats.map((stat, i) => (
             <FadeInSection key={i} delay={i * 150}>
-              <div style={{
-                flex: 1,
-                minWidth: '200px',
-                padding: '40px',
-                background: 'linear-gradient(145deg, #1e2235, #171a28)',
-                borderRadius: '20px',
-                boxShadow: 'inset 4px 4px 8px #0f1018, inset -4px -4px 8px #252a3a',
-                textAlign: 'center'
-              }}>
+              <div 
+                style={{
+                  flex: 1,
+                  minWidth: '200px',
+                  padding: '40px',
+                  background: '#1a1e2e',
+                  borderRadius: '20px',
+                  boxShadow: 'inset 4px 4px 8px #10131a, inset -4px -4px 8px #242a3e',
+                  textAlign: 'center',
+                  transition: 'all 0.3s ease'
+                }}
+              >
                 <div style={{
                   fontSize: '48px',
                   fontWeight: '700',

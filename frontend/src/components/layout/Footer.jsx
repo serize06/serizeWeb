@@ -1,10 +1,7 @@
-import { Link } from 'react-router-dom'
-
 export default function Footer() {
   return (
     <footer style={{
       padding: '48px 64px',
-      borderTop: '1px solid rgba(255,255,255,0.05)',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',

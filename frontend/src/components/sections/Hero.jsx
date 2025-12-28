@@ -55,27 +55,44 @@ export default function Hero() {
       
       <FadeInSection delay={300}>
         <div style={{ display: 'flex', gap: '16px' }}>
-          <Link to="/projects" style={{
-            padding: '16px 32px',
-            background: 'linear-gradient(145deg, #1e2a4a, #182035)',
-            border: '1px solid rgba(100, 255, 218, 0.3)',
-            borderRadius: '12px',
-            color: '#64ffda',
-            fontSize: '14px',
-            fontWeight: '600',
-            boxShadow: '8px 8px 16px #0d0d1a, -8px -8px 16px #232340',
-          }}>
+          <Link 
+            to="/projects" 
+            style={{
+              padding: '16px 32px',
+              background: '#1a1e2e',
+              borderRadius: '14px',
+              color: '#64ffda',
+              fontSize: '14px',
+              fontWeight: '600',
+              boxShadow: '6px 6px 12px #10131a, -6px -6px 12px #242a3e',
+              transition: 'all 0.3s ease',
+              display: 'inline-block'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '8px 8px 16px #10131a, -8px -8px 16px #242a3e, 0 0 20px rgba(100, 255, 218, 0.15)'
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '6px 6px 12px #10131a, -6px -6px 12px #242a3e'
+            }}
+          >
             프로젝트 보기
           </Link>
-          <Link to="/challenges" style={{
-            padding: '16px 32px',
-            background: 'transparent',
-            border: '1px solid #3a3a5a',
-            borderRadius: '12px',
-            color: '#a0a0a0',
-            fontSize: '14px',
-            fontWeight: '600',
-          }}>
+          <Link 
+            to="/challenges" 
+            style={{
+              padding: '16px 32px',
+              background: '#1a1e2e',
+              borderRadius: '14px',
+              color: '#a0a0a0',
+              fontSize: '14px',
+              fontWeight: '600',
+              boxShadow: 'inset 3px 3px 6px #10131a, inset -3px -3px 6px #242a3e',
+              transition: 'all 0.3s ease',
+              display: 'inline-block'
+            }}
+          >
             챌린지 도전
           </Link>
         </div>

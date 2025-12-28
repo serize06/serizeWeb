@@ -28,10 +28,9 @@ export default function Navbar() {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '24px 64px',
-      background: scrolled ? 'rgba(26, 26, 46, 0.9)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(20px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : 'none',
+      padding: '20px 64px',
+      background: scrolled ? '#1a1e2e' : 'transparent',
+      boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none',
       transition: 'all 0.3s ease',
       zIndex: 1000
     }}>
@@ -44,7 +43,7 @@ export default function Navbar() {
         SecLab
       </Link>
       
-      <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
         {navItems.map((item) => (
           <Link
             key={item.path}
@@ -61,21 +60,20 @@ export default function Navbar() {
           </Link>
         ))}
         
-        {/* 로그인 버튼 */}
         <Link
           to="/login"
           style={{
             padding: '10px 24px',
-            background: location.pathname === '/login' 
-              ? 'linear-gradient(145deg, #1e2a4a, #182035)' 
-              : 'transparent',
-            border: '1px solid rgba(100, 255, 218, 0.3)',
-            borderRadius: '8px',
+            background: '#1a1e2e',
+            borderRadius: '10px',
             color: '#64ffda',
             fontSize: '14px',
             fontWeight: '600',
+            boxShadow: location.pathname === '/login' 
+              ? 'inset 3px 3px 6px #10131a, inset -3px -3px 6px #242a3e'
+              : '4px 4px 10px #10131a, -4px -4px 10px #242a3e',
             transition: 'all 0.3s ease',
-            marginLeft: '16px'
+            marginLeft: '8px'
           }}
         >
           로그인
