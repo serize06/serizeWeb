@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # XSS 데모 환경
+  xss-demo:
+    build: ./challenges/xss-demo
+    image: serize/xss-demo:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # SQL Injection 데모 환경
+  sqli-demo:
+    build: ./challenges/sqli-demo
+    image: serize/sqli-demo:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # JWT 취약점 데모 환경
+  jwt-demo:
+    build: ./challenges/jwt-demo
+    image: serize/jwt-demo:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # Prompt Injection 데모 환경
+  prompt-injection:
+    build: ./challenges/prompt-injection
+    image: serize/prompt-injection-demo:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  sandbox-network:
+    driver: bridge
+    internal: true  # 외부 인터넷 접근 차단
