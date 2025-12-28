@@ -7,6 +7,7 @@ import Projects from './pages/Projects'
 import Challenges from './pages/Challenges'
 import Exploits from './pages/Exploits'
 import About from './pages/About'
+import Login from './pages/Login'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/exploits" element={<Exploits />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
       <Footer />

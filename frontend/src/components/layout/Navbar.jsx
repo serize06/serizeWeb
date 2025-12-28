@@ -44,7 +44,7 @@ export default function Navbar() {
         SecLab
       </Link>
       
-      <div style={{ display: 'flex', gap: '40px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
         {navItems.map((item) => (
           <Link
             key={item.path}
@@ -60,6 +60,26 @@ export default function Navbar() {
             {item.label}
           </Link>
         ))}
+        
+        {/* 로그인 버튼 */}
+        <Link
+          to="/login"
+          style={{
+            padding: '10px 24px',
+            background: location.pathname === '/login' 
+              ? 'linear-gradient(145deg, #1e2a4a, #182035)' 
+              : 'transparent',
+            border: '1px solid rgba(100, 255, 218, 0.3)',
+            borderRadius: '8px',
+            color: '#64ffda',
+            fontSize: '14px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease',
+            marginLeft: '16px'
+          }}
+        >
+          로그인
+        </Link>
       </div>
     </nav>
   )

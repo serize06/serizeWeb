@@ -1,0 +1,277 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
+export default function Login() {
+  const [isLogin, setIsLogin] = useState(true)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    username: ''
+  })
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // TODO: API 연동
+    console.log(isLogin ? 'Login:' : 'Register:', formData)
+  }
+
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '120px 24px 80px'
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '420px',
+        padding: '48px',
+        background: 'linear-gradient(145deg, #1e2235, #171a28)',
+        borderRadius: '24px',
+        boxShadow: '20px 20px 40px #0d0f15, -20px -20px 40px #252a3c',
+        border: '1px solid rgba(255,255,255,0.03)'
+      }}>
+        {/* 탭 전환 */}
+        <div style={{
+          display: 'flex',
+          marginBottom: '32px',
+          background: 'rgba(0,0,0,0.2)',
+          borderRadius: '12px',
+          padding: '4px'
+        }}>
+          <button
+            onClick={() => setIsLogin(true)}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: isLogin ? 'linear-gradient(145deg, #1e2a4a, #182035)' : 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              color: isLogin ? '#64ffda' : '#6a7080',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            로그인
+          </button>
+          <button
+            onClick={() => setIsLogin(false)}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: !isLogin ? 'linear-gradient(145deg, #1e2a4a, #182035)' : 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              color: !isLogin ? '#64ffda' : '#6a7080',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            회원가입
+          </button>
+        </div>
+
+        {/* 헤더 */}
+        <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+          <h1 style={{
+            fontSize: '28px',
+            fontWeight: '700',
+            color: '#ffffff',
+            marginBottom: '8px'
+          }}>
+            {isLogin ? 'Welcome Back' : 'Create Account'}
+          </h1>
+          <p style={{
+            fontSize: '14px',
+            color: '#6a7080'
+          }}>
+            {isLogin ? '계정에 로그인하세요' : '새 계정을 만드세요'}
+          </p>
+        </div>
+
+        {/* 폼 */}
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '12px',
+                color: '#8892a0',
+                marginBottom: '8px',
+                fontWeight: '500'
+              }}>
+                사용자명
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="username"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: 'rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '10px',
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  outline: 'none',
+                  transition: 'border-color 0.3s ease',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+          )}
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '12px',
+              color: '#8892a0',
+              marginBottom: '8px',
+              fontWeight: '500'
+            }}>
+              이메일
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@email.com"
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                background: 'rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '10px',
+                color: '#ffffff',
+                fontSize: '14px',
+                outline: 'none',
+                transition: 'border-color 0.3s ease',
+                boxSizing: 'border-box'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '12px',
+              color: '#8892a0',
+              marginBottom: '8px',
+              fontWeight: '500'
+            }}>
+              비밀번호
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                background: 'rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '10px',
+                color: '#ffffff',
+                fontSize: '14px',
+                outline: 'none',
+                transition: 'border-color 0.3s ease',
+                boxSizing: 'border-box'
+              }}
+            />
+          </div>
+
+          {isLogin && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginBottom: '24px'
+            }}>
+              <Link to="/forgot-password" style={{
+                fontSize: '13px',
+                color: '#64ffda',
+                textDecoration: 'none'
+              }}>
+                비밀번호 찾기
+              </Link>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '16px',
+              background: 'linear-gradient(145deg, #1e2a4a, #182035)',
+              border: '1px solid rgba(100, 255, 218, 0.3)',
+              borderRadius: '12px',
+              color: '#64ffda',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '8px 8px 16px #0d0d1a, -8px -8px 16px #232340',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            {isLogin ? '로그인' : '회원가입'}
+          </button>
+        </form>
+
+        {/* 소셜 로그인 */}
+        <div style={{ marginTop: '32px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+            <span style={{ fontSize: '12px', color: '#6a7080' }}>또는</span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+          </div>
+
+          <button
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '10px',
+              color: '#a0a0a0',
+              fontSize: '14px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub로 계속하기
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
