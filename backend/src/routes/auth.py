@@ -228,20 +228,11 @@ async def refresh_token(token_data: TokenRefresh, db: AsyncSession = Depends(get
 
 @router.get("/me", response_model=UserResponse)
 async def get_me(
-    current_user: dict = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """현재 로그인한 유저 정보"""
-    
-    user = await get_user_by_id(db, current_user["user_id"])
-    
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="사용자를 찾을 수 없습니다"
-        )
-    
-    return UserResponse.model_validate(user)
+    return UserResponse.model_validate(current_user)
 
 
 @router.post("/logout", response_model=MessageResponse)
