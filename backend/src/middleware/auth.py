@@ -4,8 +4,12 @@ from typing import Optional
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from ..config.security import get_settings
+from ..models.database import get_db
+from ..models.user import User
 
 settings = get_settings()
 security = HTTPBearer()
@@ -33,7 +37,10 @@ def create_refresh_token(data: dict) -> str:
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: AsyncSession = Depends(get_db)
+) -> User:
     token = credentials.credentials
     
     try:
@@ -47,7 +54,17 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
                 detail="유효하지 않은 토큰입니다"
             )
         
-        return {"user_id": user_id}
+        # DB에서 User 객체 가져오기
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalar_one_or_none()
+        
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="사용자를 찾을 수 없습니다"
+            )
+        
+        return user
         
     except JWTError:
         raise HTTPException(
