@@ -1,11 +1,34 @@
+import { useState, useEffect } from 'react'
 import FadeInSection from '../common/FadeInSection'
+import { projectsAPI, challengesAPI } from '../../services/api'
 
 export default function Stats() {
-  const stats = [
-    { number: '12', label: 'Projects' },
-    { number: '8', label: 'Challenges' },
-    { number: '5', label: 'Exploits' }
-  ]
+  const [stats, setStats] = useState([
+    { number: '0', label: 'Projects' },
+    { number: '0', label: 'Challenges' },
+    { number: '0', label: 'Exploits' }
+  ])
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
+
+  const fetchStats = async () => {
+    try {
+      const [projectsRes, challengesRes] = await Promise.all([
+        projectsAPI.getAll(),
+        challengesAPI.getAll()
+      ])
+      
+      setStats([
+        { number: String(projectsRes.data.length), label: 'Projects' },
+        { number: String(challengesRes.data.length), label: 'Challenges' },
+        { number: '0', label: 'Exploits' }
+      ])
+    } catch (error) {
+      console.error('Failed to fetch stats:', error)
+    }
+  }
 
   return (
     <section style={{
