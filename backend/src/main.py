@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes.auth import router as auth_router
 from .routes.projects import router as projects_router
 from .routes.challenges import router as challenges_router
+from .routes.leaderboard import router as leaderboard_router
 from .models.database import init_db
 
 
@@ -32,6 +33,7 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api")
 app.include_router(projects_router, prefix="/api")
 app.include_router(challenges_router, prefix="/api")
+app.include_router(leaderboard_router, prefix="/api")
 
 
 @app.get("/")

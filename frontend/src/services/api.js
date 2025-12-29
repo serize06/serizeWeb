@@ -85,3 +85,8 @@ export const challengesAPI = {
 }
 
 export default api
+
+// Leaderboard API
+export const leaderboardAPI = {
+  getAll: () => api.get('/leaderboard')
+}

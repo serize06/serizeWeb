@@ -5,6 +5,8 @@ from typing import List
 
 from ..models.database import get_db
 from ..models.challenge import Challenge
+from ..models.solve import Solve
+from ..models.user import User
 from ..schemas.challenge import ChallengeCreate, ChallengeUpdate, ChallengeResponse, FlagSubmit
 from ..middleware.auth import get_current_user
 
@@ -48,8 +50,35 @@ async def submit_flag(
     if not challenge:
         raise HTTPException(status_code=404, detail="챌린지를 찾을 수 없습니다")
     
+    # 이미 푼 문제인지 확인
+    existing_solve = await db.execute(
+        select(Solve).where(
+            Solve.user_id == current_user["id"],
+            Solve.challenge_id == challenge_id
+        )
+    )
+    if existing_solve.scalar_one_or_none():
+        return {"correct": False, "message": "이미 푼 문제입니다."}
+    
+    # 플래그 확인
     if flag_data.flag == challenge.flag:
-        return {"correct": True, "message": "정답입니다! 🎉"}
+        # 풀이 기록 저장
+        solve = Solve(
+            user_id=current_user["id"],
+            challenge_id=challenge_id,
+            points_earned=challenge.points
+        )
+        db.add(solve)
+        
+        # 유저 포인트 증가
+        user_result = await db.execute(select(User).where(User.id == current_user["id"]))
+        user = user_result.scalar_one_or_none()
+        if user:
+            user.points = (user.points or 0) + challenge.points
+        
+        await db.commit()
+        
+        return {"correct": True, "message": f"정답입니다! 🎉 +{challenge.points}점"}
     else:
         return {"correct": False, "message": "틀렸습니다. 다시 시도해보세요."}
 

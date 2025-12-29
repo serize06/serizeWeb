@@ -22,6 +22,7 @@ async def init_db():
     from .user import User
     from .project import Project
     from .challenge import Challenge
+    from .solve import Solve
     
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
