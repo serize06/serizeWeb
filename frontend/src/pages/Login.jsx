@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+
 export default function Login() {
   const navigate = useNavigate()
   const { login, register, isAuthenticated } = useAuth()
@@ -52,6 +54,10 @@ export default function Login() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleGitHubLogin = () => {
+    window.location.href = `${API_URL}/auth/github`
   }
 
   const inputStyle = (fieldName) => ({
@@ -386,6 +392,7 @@ export default function Login() {
           </div>
 
           <button
+            onClick={handleGitHubLogin}
             style={{
               width: '100%',
               padding: '14px',

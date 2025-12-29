@@ -28,6 +28,18 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }
 
+  const setTokens = async (accessToken, refreshToken) => {
+    localStorage.setItem('access_token', accessToken)
+    localStorage.setItem('refresh_token', refreshToken)
+    
+    try {
+      const response = await authAPI.getMe()
+      setUser(response.data)
+    } catch (error) {
+      console.error('Failed to get user info:', error)
+    }
+  }
+
   const login = async (email, password) => {
     const response = await authAPI.login({ email, password })
     const { access_token, refresh_token, user } = response.data
@@ -68,6 +80,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    setTokens,
     isAuthenticated: !!user
   }
 
