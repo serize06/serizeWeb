@@ -1,43 +1,21 @@
-from pydantic import BaseModel
-from typing import Optional, List
-from datetime import datetime
+from sqlalchemy import Column, String, Text, Boolean, DateTime, Integer
+from sqlalchemy.sql import func
+from .database import Base
+import uuid
 
 
-class ProjectCreate(BaseModel):
-    title: str
-    description: str
-    image_url: Optional[str] = None
-    github_url: Optional[str] = None
-    demo_url: Optional[str] = None
-    tags: Optional[str] = None
-    is_featured: bool = False
-    order: int = 0
+class Project(Base):
+    __tablename__ = "projects"
 
-
-class ProjectUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    image_url: Optional[str] = None
-    github_url: Optional[str] = None
-    demo_url: Optional[str] = None
-    tags: Optional[str] = None
-    is_featured: Optional[bool] = None
-    order: Optional[int] = None
-    is_active: Optional[bool] = None
-
-
-class ProjectResponse(BaseModel):
-    id: str
-    title: str
-    description: str
-    image_url: Optional[str]
-    github_url: Optional[str]
-    demo_url: Optional[str]
-    tags: Optional[str]
-    is_featured: bool
-    order: int
-    is_active: bool
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=False)
+    image_url = Column(String(500), nullable=True)
+    github_url = Column(String(500), nullable=True)
+    demo_url = Column(String(500), nullable=True)
+    tags = Column(String(500), nullable=True)
+    is_featured = Column(Boolean, default=False)
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

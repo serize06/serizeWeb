@@ -1,49 +1,22 @@
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from sqlalchemy import Column, String, Text, Boolean, DateTime, Integer
+from sqlalchemy.sql import func
+from .database import Base
+import uuid
 
 
-class ChallengeCreate(BaseModel):
-    title: str
-    description: str
-    difficulty: str = "medium"
-    category: Optional[str] = None
-    points: int = 100
-    flag: Optional[str] = None
-    hint: Optional[str] = None
-    file_url: Optional[str] = None
-    order: int = 0
+class Challenge(Base):
+    __tablename__ = "challenges"
 
-
-class ChallengeUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    difficulty: Optional[str] = None
-    category: Optional[str] = None
-    points: Optional[int] = None
-    flag: Optional[str] = None
-    hint: Optional[str] = None
-    file_url: Optional[str] = None
-    order: Optional[int] = None
-    is_active: Optional[bool] = None
-
-
-class ChallengeResponse(BaseModel):
-    id: str
-    title: str
-    description: str
-    difficulty: str
-    category: Optional[str]
-    points: int
-    hint: Optional[str]
-    file_url: Optional[str]
-    is_active: bool
-    order: int
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class FlagSubmit(BaseModel):
-    flag: str
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=False)
+    difficulty = Column(String(20), default="medium")
+    category = Column(String(100), nullable=True)
+    points = Column(Integer, default=100)
+    flag = Column(String(200), nullable=True)
+    hint = Column(Text, nullable=True)
+    file_url = Column(String(500), nullable=True)
+    is_active = Column(Boolean, default=True)
+    order = Column(Integer, default=0)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
