@@ -61,7 +61,8 @@ export const authAPI = {
   login: (data) => api.post('/auth/login', data),
   logout: () => api.post('/auth/logout'),
   getMe: () => api.get('/auth/me'),
-  refresh: (refreshToken) => api.post('/auth/refresh', { refresh_token: refreshToken })
+  refresh: (refreshToken) => api.post('/auth/refresh', { refresh_token: refreshToken }),
+  updateProfile: (data) => api.put('/auth/me', data)
 }
 
 export default api

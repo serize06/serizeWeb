@@ -20,6 +20,12 @@ class TokenRefresh(BaseModel):
     refresh_token: str
 
 
+class UserUpdate(BaseModel):
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
+    current_password: Optional[str] = None
+    new_password: Optional[str] = Field(None, min_length=8, max_length=100)
+
+
 # Response schemas
 class UserResponse(BaseModel):
     id: UUID

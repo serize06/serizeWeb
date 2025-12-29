@@ -248,3 +248,52 @@ async def get_me(
 async def logout(current_user: dict = Depends(get_current_user)):
     """로그아웃 (클라이언트에서 토큰 삭제)"""
     return MessageResponse(message="로그아웃 되었습니다")
+
+from ..schemas.auth import UserUpdate
+
+@router.put("/me", response_model=UserResponse)
+async def update_me(
+    user_data: UserUpdate,
+    current_user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """프로필 수정"""
+    
+    user = await get_user_by_id(db, current_user["user_id"])
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="사용자를 찾을 수 없습니다"
+        )
+    
+    # 유저네임 변경
+    if user_data.username and user_data.username != user.username:
+        existing = await get_user_by_username(db, user_data.username)
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="이미 사용중인 사용자명입니다"
+            )
+        user.username = user_data.username
+    
+    # 비밀번호 변경
+    if user_data.new_password:
+        if not user_data.current_password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="현재 비밀번호를 입력해주세요"
+            )
+        
+        if not verify_password(user_data.current_password, user.hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="현재 비밀번호가 올바르지 않습니다"
+            )
+        
+        user.hashed_password = get_password_hash(user_data.new_password)
+    
+    await db.commit()
+    await db.refresh(user)
+    
+    return UserResponse.model_validate(user)
