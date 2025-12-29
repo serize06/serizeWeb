@@ -65,4 +65,23 @@ export const authAPI = {
   updateProfile: (data) => api.put('/auth/me', data)
 }
 
+// Projects API
+export const projectsAPI = {
+  getAll: () => api.get('/projects'),
+  getOne: (id) => api.get(`/projects/${id}`),
+  create: (data) => api.post('/projects', data),
+  update: (id, data) => api.put(`/projects/${id}`, data),
+  delete: (id) => api.delete(`/projects/${id}`)
+}
+
+// Challenges API
+export const challengesAPI = {
+  getAll: () => api.get('/challenges'),
+  getOne: (id) => api.get(`/challenges/${id}`),
+  submitFlag: (id, flag) => api.post(`/challenges/${id}/submit`, { flag }),
+  create: (data) => api.post('/challenges', data),
+  update: (id, data) => api.put(`/challenges/${id}`, data),
+  delete: (id) => api.delete(`/challenges/${id}`)
+}
+
 export default api
