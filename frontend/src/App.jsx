@@ -8,6 +8,7 @@ import Challenges from './pages/Challenges'
 import Exploits from './pages/Exploits'
 import About from './pages/About'
 import Login from './pages/Login'
+import Profile from './pages/Profile'
 import AuthCallback from './pages/AuthCallback'
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/exploits" element={<Exploits />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       </main>
