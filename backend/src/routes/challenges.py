@@ -1,4 +1,6 @@
+import os
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import List
@@ -73,6 +75,22 @@ async def submit_flag(
         return {"correct": True, "message": f"정답입니다! +{challenge.points}점"}
     else:
         return {"correct": False, "message": "틀렸습니다. 다시 시도해보세요."}
+
+
+@router.get("/{challenge_id}/files")
+async def download_challenge_files(challenge_id: str, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Challenge).where(Challenge.id == challenge_id))
+    challenge = result.scalar_one_or_none()
+    if not challenge or not challenge.file_url:
+        raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다")
+
+    static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "static")
+    file_path = os.path.join(static_dir, challenge.file_url.lstrip("/static/"))
+
+    if not os.path.isfile(file_path):
+        raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다")
+
+    return FileResponse(file_path, filename=os.path.basename(file_path), media_type="application/gzip")
 
 
 @router.post("", response_model=ChallengeResponse, status_code=status.HTTP_201_CREATED)

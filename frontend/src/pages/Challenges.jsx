@@ -121,7 +121,7 @@ export default function Challenges() {
             )}
 
             {selectedChallenge.file_url && (
-              <a href={selectedChallenge.file_url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '10px 20px', background: '#1a1e2e', borderRadius: '10px', boxShadow: '4px 4px 8px #10131a, -4px -4px 8px #242a3e', color: '#64ffda', fontSize: '13px', textDecoration: 'none', marginBottom: '24px' }}>
+              <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api'}/challenges/${selectedChallenge.id}/files`} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '10px 20px', background: '#1a1e2e', borderRadius: '10px', boxShadow: '4px 4px 8px #10131a, -4px -4px 8px #242a3e', color: '#64ffda', fontSize: '13px', textDecoration: 'none', marginBottom: '24px' }}>
                 파일 다운로드
               </a>
             )}

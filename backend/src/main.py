@@ -22,7 +22,7 @@ async def seed_challenges():
                 "우리 회사에서 새로 만든 3D Model Inspector 서비스!\n"
                 "glTF 모델을 업로드하면 vertex 데이터를 추출해줍니다.\n"
                 "cgltf_validate()도 호출하고, vertex 수도 4096개로 제한했으니 안전하겠죠?\n\n"
-                "nc HOST 31337"
+                f"nc {os.getenv('CTF_HOST', 'HOST')} {os.getenv('CTF_PORT_CGLTF', '31337')}"
             ),
             "difficulty": "medium",
             "category": "Pwn",
