@@ -34,6 +34,7 @@ class SandboxManager:
                 "sqli": "serize/sqli-demo:latest",
                 "jwt": "serize/jwt-demo:latest",
                 "prompt-injection": "serize/prompt-injection-demo:latest",
+                "cgltf-oob-read": "serize/cgltf-oob-read:latest",
             }
             
             image = image_map.get(challenge_type)

@@ -23,7 +23,7 @@ from ..services.auth_service import (
     authenticate_user,
     create_tokens
 )
-from ..middleware.auth import get_current_user, get_password_hash
+from ..middleware.auth import get_current_user, get_password_hash, verify_password
 from ..config.security import get_settings
 
 settings = get_settings()

@@ -41,6 +41,16 @@ services:
           cpus: '0.5'
           memory: 512M
 
+  # cgltf OOB Read 챌린지 (Heap Leak via glTF accessor)
+  cgltf-oob-read:
+    build: ./challenges/cgltf-oob-read
+    image: serize/cgltf-oob-read:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
 networks:
   sandbox-network:
     driver: bridge
