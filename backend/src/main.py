@@ -27,7 +27,7 @@ async def seed_challenges():
             "difficulty": "medium",
             "category": "Pwn",
             "points": 300,
-            "flag": "FLAG{h34p_0v3rr34d_1n_cgl7f_4cc3ss0r_r34d_fl04t}",
+            "flag": os.getenv("CTF_FLAG_CGLTF", "FLAG{default}"),
             "hint": "cgltf_accessor_read_float()에서 buffer 범위 검사를 확인해보세요. accessor의 count와 buffer의 byteLength가 다르면?",
             "file_url": "/static/challenges/cgltf-oob-read/files.tar.gz",
             "is_active": True,
