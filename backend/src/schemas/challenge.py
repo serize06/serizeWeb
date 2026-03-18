@@ -12,6 +12,7 @@ class ChallengeCreate(BaseModel):
     flag: Optional[str] = None
     hint: Optional[str] = None
     file_url: Optional[str] = None
+    challenge_type: Optional[str] = None
     order: int = 0
 
 
@@ -24,6 +25,7 @@ class ChallengeUpdate(BaseModel):
     flag: Optional[str] = None
     hint: Optional[str] = None
     file_url: Optional[str] = None
+    challenge_type: Optional[str] = None
     order: Optional[int] = None
     is_active: Optional[bool] = None
 
@@ -37,6 +39,7 @@ class ChallengeResponse(BaseModel):
     points: int
     hint: Optional[str]
     file_url: Optional[str]
+    challenge_type: Optional[str]
     is_active: bool
     order: int
     created_at: datetime

@@ -84,6 +84,13 @@ export const challengesAPI = {
   delete: (id) => api.delete(`/challenges/${id}`)
 }
 
+// Instances API
+export const instancesAPI = {
+  create: (challengeType) => api.post('/instances/create', { challenge_type: challengeType }),
+  destroy: (instanceId) => api.post('/instances/destroy', { instance_id: instanceId }),
+  status: (instanceId) => api.get(`/instances/status/${instanceId}`),
+}
+
 export default api
 
 // Leaderboard API

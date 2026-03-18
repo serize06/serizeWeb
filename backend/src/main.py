@@ -8,6 +8,7 @@ from .routes.auth import router as auth_router
 from .routes.projects import router as projects_router
 from .routes.challenges import router as challenges_router
 from .routes.leaderboard import router as leaderboard_router
+from .routes.instances import router as instances_router
 from .models.database import init_db, AsyncSessionLocal
 from .models.challenge import Challenge
 from sqlalchemy import select
@@ -21,9 +22,9 @@ async def seed_challenges():
             "description": (
                 "우리 회사에서 새로 만든 3D Model Inspector 서비스!\n"
                 "glTF 모델을 업로드하면 vertex 데이터를 추출해줍니다.\n"
-                "cgltf_validate()도 호출하고, vertex 수도 4096개로 제한했으니 안전하겠죠?\n\n"
-                f"nc {os.getenv('CTF_HOST', 'HOST')} {os.getenv('CTF_PORT_CGLTF', '31337')}"
+                "cgltf_validate()도 호출하고, vertex 수도 4096개로 제한했으니 안전하겠죠?"
             ),
+            "challenge_type": "cgltf-oob-read",
             "difficulty": "medium",
             "category": "Pwn",
             "points": 300,
@@ -71,6 +72,7 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(projects_router, prefix="/api")
 app.include_router(challenges_router, prefix="/api")
 app.include_router(leaderboard_router, prefix="/api")
+app.include_router(instances_router, prefix="/api")
 
 static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 if os.path.isdir(static_dir):

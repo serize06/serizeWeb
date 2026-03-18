@@ -178,13 +178,17 @@ int main(void)
     signal(SIGALRM, alarm_handler);
     signal(SIGCHLD, SIG_IGN);
 
+    int listen_port = PORT;
+    char *env_port = getenv("PORT");
+    if (env_port) listen_port = atoi(env_port);
+
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     int opt = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     struct sockaddr_in addr = {
         .sin_family = AF_INET,
-        .sin_port = htons(PORT),
+        .sin_port = htons(listen_port),
         .sin_addr.s_addr = INADDR_ANY,
     };
 
@@ -194,7 +198,7 @@ int main(void)
     }
 
     listen(sockfd, 16);
-    printf("[*] 3D Model Inspector listening on port %d\n", PORT);
+    printf("[*] 3D Model Inspector listening on port %d\n", listen_port);
 
     while (1) {
         struct sockaddr_in client;

@@ -17,6 +17,7 @@ class Challenge(Base):
     hint = Column(Text, nullable=True)
     file_url = Column(String(500), nullable=True)
     is_active = Column(Boolean, default=True)
+    challenge_type = Column(String(100), nullable=True)  # 인스턴스 생성용 (예: "cgltf-oob-read")
     order = Column(Integer, default=0)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
