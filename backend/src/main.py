@@ -41,7 +41,12 @@ async def seed_challenges():
             result = await session.execute(
                 select(Challenge).where(Challenge.title == data["title"])
             )
-            if not result.scalar_one_or_none():
+            existing = result.scalar_one_or_none()
+            if existing:
+                # 기존 레코드의 누락된 필드 업데이트
+                if not existing.challenge_type and data.get("challenge_type"):
+                    existing.challenge_type = data["challenge_type"]
+            else:
                 session.add(Challenge(**data))
         await session.commit()
 
