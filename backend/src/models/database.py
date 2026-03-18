@@ -23,6 +23,15 @@ async def init_db():
     from .project import Project
     from .challenge import Challenge
     from .solve import Solve
-    
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # 기존 테이블에 새 컬럼 추가 (없으면)
+        try:
+            await conn.execute(
+                __import__('sqlalchemy').text(
+                    "ALTER TABLE challenges ADD COLUMN challenge_type VARCHAR(100)"
+                )
+            )
+        except Exception:
+            pass  # 이미 있으면 무시
